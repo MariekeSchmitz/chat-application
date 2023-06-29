@@ -84,6 +84,17 @@ public class ServerRequestHandler {
     }
 
     // request to login 
+    public void sendLoginRequest(String username, String password) throws IOException {
+
+        tcpWriter.write("LOGIN " + username + " " + password);
+        tcpWriter.newLine();
+        tcpWriter.flush();
+
+        String response = tcpReader.readLine();
+
+        // send response to responseHandler
+        serverResponseHandler.handleTCPResponse(response);
+    }
 
 
 

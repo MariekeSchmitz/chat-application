@@ -45,6 +45,24 @@ public class Client {
         return isInChatMenu;
     }
 
+    public void setLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
+
+    public void setInStatusMenu(boolean isInStatusMenu) {
+        this.isInStatusMenu = isInStatusMenu;
+    }
+
+    public void setInActionMenu(boolean isInActionMenu) {
+        this.isInActionMenu = isInActionMenu;
+    }
+
+    public void setInChatMenu(boolean isInChatMenu) {
+        this.isInChatMenu = isInChatMenu;
+    }
+
+    
+
     
 
     

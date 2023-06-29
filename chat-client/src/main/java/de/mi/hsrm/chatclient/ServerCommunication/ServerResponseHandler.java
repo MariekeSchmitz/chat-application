@@ -25,13 +25,16 @@ public class ServerResponseHandler {
         switch(command.toUpperCase()) {
 
             case "REGISTER":
-                System.out.println("------------------------------------------");
-                System.out.println("Registrierung erfolgreich. Du kannst dich jetzt einloggen.");
-                System.out.println("------------------------------------------");
+                System.out.println("\nRegistrierung erfolgreich. Du kannst dich jetzt einloggen.");
+                break;
+
+            case "LOGIN":
+                client.setLoggedIn(true);
+                System.out.println("\nLogin erfolgreich. Du bist jetzt eingeloggt.");
                 break;
 
             default:
-                System.out.println("Command nicht gefunden.");
+                System.out.println("\nCommand nicht gefunden.");
                 break;
 
         }
