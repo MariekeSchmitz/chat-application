@@ -12,15 +12,16 @@ import de.mi.hsrm.chatclient.Client;
 public class ServerRequestHandler {
     
     private Client client;
+    private ServerResponseHandler serverResponseHandler;
 
-    private Socket tcp_socket;
-    private BufferedWriter tcp_writer;
-    private BufferedReader tcp_reader;
+    private Socket tcpSocket;
+    private BufferedWriter tcpWriter;
+    private BufferedReader tcpReader;
 
     public ServerRequestHandler(Client client) {
         this.client = client;
+        this.serverResponseHandler = new ServerResponseHandler(client);
     }
-
 
     // setup TCP connection with clients host and port --> create socket, reader and writer
     public void enableTcpConnection() {
@@ -29,15 +30,66 @@ public class ServerRequestHandler {
         int port = client.getTcpPort();
 
         try {
-            tcp_socket = new Socket(host, port);
-            tcp_reader = new BufferedReader(new InputStreamReader(tcp_socket.getInputStream()));
-            tcp_writer = new BufferedWriter(new OutputStreamWriter(tcp_socket.getOutputStream()));
+            tcpSocket = new Socket(host, port);
+            tcpReader = new BufferedReader(new InputStreamReader(tcpSocket.getInputStream()));
+            tcpWriter = new BufferedWriter(new OutputStreamWriter(tcpSocket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    
+    // close TCP connection (potentially including logout) and send stop session-info to server
+    public void shutdownTcpConnection() {
+
+        try {
+
+            if (client.isLoggedIn()) {
+                tcpWriter.write("LOGOUT");
+                tcpWriter.newLine();
+                tcpWriter.flush();
+            }
+
+            tcpWriter.write("END_SESSION");
+            tcpWriter.newLine();
+            tcpWriter.flush();
+            
+            if (tcpSocket != null) {
+                tcpSocket.close();
+            }
+            
+            if (tcpWriter != null) {
+                tcpWriter.close();
+            }
+            
+            if (tcpReader != null) {
+                tcpReader.close();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // request to register on server with username and password
+    public void sendRegisterRequest(String username, String password) throws IOException {
+
+        tcpWriter.write("REGISTER " + username + " " + password);
+        tcpWriter.newLine();
+        tcpWriter.flush();
+
+        String response = tcpReader.readLine();
+
+        // send response to responseHandler
+        serverResponseHandler.handleTCPResponse(response);
+    }
+
+    // request to login 
+
+
+
+
+
+
 
 
 

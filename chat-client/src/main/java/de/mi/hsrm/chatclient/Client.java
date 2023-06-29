@@ -11,6 +11,11 @@ public class Client {
     private String tcpHost;
     private int tcpPort;
 
+    private boolean isLoggedIn = false;
+    private boolean isInStatusMenu = false;
+    private boolean isInActionMenu = false;
+    private boolean isInChatMenu = false;
+
     public Client(String host, int port) {
         tcpHost = host;
         tcpPort = port;
@@ -23,6 +28,24 @@ public class Client {
     public int getTcpPort() {
         return tcpPort;
     }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public boolean isInStatusMenu() {
+        return isInStatusMenu;
+    }
+
+    public boolean isInActionMenu() {
+        return isInActionMenu;
+    }
+
+    public boolean isInChatMenu() {
+        return isInChatMenu;
+    }
+
+    
 
     
     
