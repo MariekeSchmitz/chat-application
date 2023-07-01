@@ -44,6 +44,12 @@ public class UserIOService {
                 client.setChatMenuActive(false);
             }
 
+            if (line.contains("image")) {
+                // src/main/resources/bild.txt
+                String path = (line.split(" "))[1];
+                client.getChatService().sendImage(path);
+            }
+
             // else send input as chatmessage
             if (!line.equals("!back")) {
                 client.getChatService().sendChatMessage(line);
