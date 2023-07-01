@@ -10,19 +10,19 @@ import java.net.Socket;
 
 import de.mi.hsrm.chatclient.Client;
 
-public class ServerRequestHandler {
+public class ServerRequestService {
     
     private Client client;
-    private ServerResponseHandler serverResponseHandler;
+    private ServerResponseService serverResponseHandler;
 
     private Socket tcpSocket;
     private BufferedWriter tcpWriter;
     private BufferedReader tcpReader;
 
 
-    public ServerRequestHandler(Client client) {
+    public ServerRequestService(Client client) {
         this.client = client;
-        this.serverResponseHandler = new ServerResponseHandler(client);
+        this.serverResponseHandler = new ServerResponseService(client);
     }
 
     // setup TCP connection with clients host and port --> create socket, reader and writer
@@ -170,12 +170,6 @@ public class ServerRequestHandler {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
 
 
 
