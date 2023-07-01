@@ -1,4 +1,4 @@
-package de.mi.hsrm.chatclient.ServerCommunication;
+package de.mi.hsrm.chatclient.ServerService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import de.mi.hsrm.chatclient.ChatService;
 import de.mi.hsrm.chatclient.Client;
 
 public class ServerRequestService {
@@ -45,7 +46,7 @@ public class ServerRequestService {
     // request to register on server with username and password
     public void sendRegisterRequest(String username, String password) throws IOException {
 
-        tcpWriter.write("REGISTER " + username + " " + password);
+        tcpWriter.write("REGISTER:" + username + " " + password);
         tcpWriter.newLine();
         tcpWriter.flush();
 
@@ -58,7 +59,7 @@ public class ServerRequestService {
     // request to login 
     public void sendLoginRequest(String username, String password) throws IOException {
 
-        tcpWriter.write("LOGIN " + username + " " + password);
+        tcpWriter.write("LOGIN:" + username + " " + password);
         tcpWriter.newLine();
         tcpWriter.flush();
 
@@ -105,7 +106,7 @@ public class ServerRequestService {
         String ownIPAddress = InetAddress.getLocalHost().getHostAddress();
         
         // send invite + own ip and port to enable udp connection
-        tcpWriter.write("INVITE " + username + " " + ownIPAddress + " " + Client.DEFAULT_UDP_PORT);
+        tcpWriter.write("INVITE:" + username + " " + ownIPAddress + " " + ChatService.DEFAULT_UDP_PORT);
         tcpWriter.newLine();
         tcpWriter.flush();
 
@@ -118,7 +119,7 @@ public class ServerRequestService {
     // send request to deny a request a user has sent to me (chat invite)
     public void sendDenyRequest(String username) throws IOException {
 
-        tcpWriter.write("DECLINE " + username);
+        tcpWriter.write("DECLINE:" + username);
         tcpWriter.newLine();
         tcpWriter.flush();
 
@@ -130,7 +131,7 @@ public class ServerRequestService {
     // send request to accept a request a user has sent to me (chat invite)
     public void sendAcceptRequest(String username) throws IOException {
 
-        tcpWriter.write("ACCEPT " + username);
+        tcpWriter.write("ACCEPT:" + username);
         tcpWriter.newLine();
         tcpWriter.flush();
 
@@ -139,7 +140,7 @@ public class ServerRequestService {
 
     }
 
-    // close TCP connection (potentially including logout) and send stop session-info to server
+    // close TCP connection (potentially including logout) and send closed session-info to server
     public void shutdownTcpConnection() {
 
         try {
@@ -170,9 +171,4 @@ public class ServerRequestService {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 }

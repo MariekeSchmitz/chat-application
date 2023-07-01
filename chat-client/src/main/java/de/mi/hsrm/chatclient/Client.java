@@ -1,10 +1,10 @@
 package de.mi.hsrm.chatclient;
 import java.io.BufferedReader;
 import java.io.IOException;
-import de.mi.hsrm.chatclient.ServerCommunication.ServerRequestService;
+
+import de.mi.hsrm.chatclient.ServerService.ServerRequestService;
 
 public class Client {
-
     public static final int DEFAULT_TCP_PORT = 12345;
     public static final String DEFAULT_TCP_HOST = "localhost";
     
@@ -48,14 +48,10 @@ public class Client {
 
     public void performRegistration(BufferedReader reader) throws IOException {
 
-        System.out.println("-------------------------");
-        System.out.println("Please choose a username.");
-        System.out.println("-------------------------");
+        System.out.println("\nGib einen Nutzernamen ein.");
         String user = reader.readLine();
         
-        System.out.println("-------------------------");
-        System.out.println("Please choose a password.");
-        System.out.println("-------------------------");
+        System.out.println("\nGib ein Passwort ein.");
         String pass = reader.readLine();
 
         serverRequestService.sendRegisterRequest(user, pass);
@@ -65,14 +61,11 @@ public class Client {
 
     public void performLogin(BufferedReader reader) throws IOException {
 
-        System.out.println("----------------------");
-        System.out.println("What is your username?");
-        System.out.println("----------------------");
+        System.out.println("\nGib deinen Nutzernamen ein.");
+
         String user = reader.readLine();
 
-        System.out.println("----------------------");
-        System.out.println("What is your password?");
-        System.out.println("----------------------");
+        System.out.println("\nGib dein Passwort ein.");
         String pass = reader.readLine();
 
         serverRequestService.sendLoginRequest(user, pass);
@@ -82,9 +75,7 @@ public class Client {
 
     public void performInvite(BufferedReader reader) throws IOException {
 
-        System.out.println("---------------------------------");
-        System.out.println("Which user do you want to invite?");
-        System.out.println("---------------------------------");
+        System.out.println("\nWelchen User möchtest du einladen?");
         String user = reader.readLine();
 
         serverRequestService.sendInviteRequest(user);
@@ -94,9 +85,7 @@ public class Client {
 
     public void performAccept(BufferedReader reader) throws IOException {
 
-        System.out.println("----------------------------------------------");
-        System.out.println("Which user's invitation do you want to accept?");
-        System.out.println("----------------------------------------------");
+        System.out.println("\nVon welchem Nutzer möchtest du die Einladung annehmen?");
         String user = reader.readLine();
 
         serverRequestService.sendAcceptRequest(user);
@@ -104,9 +93,8 @@ public class Client {
 
 
     public void performDeny(BufferedReader reader) throws IOException {
-        System.out.println("--------------------------------------------");
-        System.out.println("Which user's invitation do you want to deny?");
-        System.out.println("--------------------------------------------");
+        System.out.println("\nVon welchem Nutzer möchtest du die Einladung ablehnen?");
+
         String user = reader.readLine();
 
         serverRequestService.sendDenyRequest(user);

@@ -22,7 +22,7 @@ public class UserIOService {
             do {
                 line = reader.readLine();
                 interpretUserInput(reader, line);
-                if (!client.isActionMenuActive()) {
+                if (!client.isChatMenuActive()) {
                     showMenu();
                 }
 
@@ -128,6 +128,7 @@ public class UserIOService {
     public void showMenu() {
 
         if (client.isActionMenuActive()) {
+            System.out.println("Variable aktiv");
             showActionMenu();
         } else if (client.isStatusMenuActive()) {
             showStatusMenu();

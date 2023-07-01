@@ -24,6 +24,8 @@ public class ChatService {
 
         if (udpSocket == null) {
 
+            System.out.println("Getting ready for chat");
+
             try {
 
                 udpSocket = new DatagramSocket(DEFAULT_UDP_PORT);

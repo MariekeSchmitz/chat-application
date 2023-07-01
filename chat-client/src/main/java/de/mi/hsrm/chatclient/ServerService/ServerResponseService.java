@@ -1,4 +1,4 @@
-package de.mi.hsrm.chatclient.ServerCommunication;
+package de.mi.hsrm.chatclient.ServerService;
 
 import de.mi.hsrm.chatclient.Client;
 
@@ -12,14 +12,12 @@ public class ServerResponseService {
 
     public void handleTCPResponse(String response) {
         
-        String[] responseElements = response.split(" ");
+        String[] responseElements = response.split(":");
         String command = responseElements[0];
-        String statusCode = responseElements[1];
-
 
         String payload = "";
-        if (responseElements.length >= 3) {
-            payload = responseElements[2];
+        if (responseElements.length >= 2) {
+            payload = responseElements[1];
         } 
 
         switch(command.toUpperCase()) {
@@ -51,36 +49,29 @@ public class ServerResponseService {
 
                 break;
             
-            // case "error":
-            //     System.out.println(payload.toUpperCase());
-            //     break;
+            case "ERROR":
+                System.out.println(payload.toUpperCase());
+                break;
 
-            case "invitationsent":
+            case "INVITE_SENT":
                 System.out.println(payload);
                 client.getChatService().getReadyForChat();
                 break;
 
-            case "INVITE_RESPONSE":
+            case "INVITE_ACCEPT":
+                System.out.println("Invitation wurde angenommen");
+                String[] data = payload.split(";");
+                String host = data[0];
+                int port = Integer.valueOf(data[1]);
 
-                if (statusCode.equals("1")) {
+                System.out.println("Host: " + host);
+                System.out.println("Port: " + port);
 
-                    // invite was accepted
-                    String[] data = payload.split(";");
-                    String host = data[0];
-                    int port = Integer.valueOf(data[1]);
-
-                    client.getChatService().setUdpHost(host);
-                    client.getChatService().setUdpPort(port);
-                    client.getChatService().getReadyForChat();
-
-                } else {
-                    // invite was declined
-                    System.out.println("\n Eine Einladung wurde abgelehnt.");
-                }
-
-                break;
-
-            case "DECLINED":
+                client.getChatService().setUdpHost(host);
+                client.getChatService().setUdpPort(port);
+                client.getChatService().getReadyForChat();
+           
+            case "INVITE_DECLINED":
                 System.out.println(payload);
                 break;
 
