@@ -45,7 +45,7 @@ public class UserIOService {
             }
 
             if (line.contains("image")) {
-                // src/main/resources/bild.txt
+                // src/main/resources/bildKlein.jpg
                 String path = (line.split(" "))[1];
                 client.getChatService().sendImage(path);
             }
