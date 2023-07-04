@@ -23,12 +23,12 @@ public class ServerResponseService {
         switch (command.toUpperCase()) {
 
             case "REGISTER":
-                System.out.println("\nRegistrierung erfolgreich. Du kannst dich jetzt einloggen.");
+                System.out.println("\n Hallo " + payload + ", du hast dich erfolgreich registriert.");
                 break;
 
             case "LOGIN":
                 client.setLoggedIn(true);
-                System.out.println("\nLogin erfolgreich. Du bist jetzt eingeloggt.");
+                System.out.println("\nWillkommen " + payload + ", du bist jetzt eingeloggt.");
                 break;
 
             case "REQUEST_ACTIVES":
@@ -54,12 +54,12 @@ public class ServerResponseService {
                 break;
 
             case "INVITE_SENT":
-                System.out.println(payload);
+                System.out.println(payload + " wurde zum Chat eingeladen.");
                 client.getChatService().getReadyForChat();
                 break;
 
             case "INVITE_ACCEPT":
-                System.out.println("Einladung wurde angenommen");
+                System.out.println("Einladung von " + payload + " wurde angenommen.");
                 String[] data = payload.split(";");
                 String host = data[0];
                 int port = Integer.valueOf(data[1]);
@@ -72,7 +72,7 @@ public class ServerResponseService {
                 client.getChatService().getReadyForChat();
 
             case "INVITE_DECLINED":
-                System.out.println(payload);
+                System.out.println(payload + " hat die Einladung abgelehnt.");
                 break;
 
             default:

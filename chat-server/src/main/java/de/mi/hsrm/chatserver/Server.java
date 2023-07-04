@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server {
 
     public static final int DEFAULT_PORT = 12345;
-    public static final String USERDATA_FILE = "src/main/resources/registeredUsers.txt";
+    public static final String USERDATA_FILE = "chat-server/src/main/resources/registeredUsers.txt";
 
     private Map<String, ChatSession> activeUsers = new ConcurrentHashMap<>();
     private Map<String, String> registeredUsers = new ConcurrentHashMap<>();
@@ -157,7 +157,7 @@ public class Server {
 
             else {
                 registeredUsers.put(user, pass);
-                session.sendMessage("REGISTER: " + user + " wurde registriert.");
+                session.sendMessage("REGISTER:" + user);
             }
 
         }
@@ -184,7 +184,7 @@ public class Server {
             String pass = data[1];
 
             if (registeredUsers.get(user) == null) {
-                session.sendErrorMessage(user + "unbekannt");
+                session.sendErrorMessage(user + " ist noch nicht registriert.");
             }
 
             else if (!registeredUsers.get(user).equals(pass)) {
@@ -198,7 +198,7 @@ public class Server {
             else {
                 session.setUser(user);
                 activeUsers.put(user, session);
-                session.sendMessage("LOGIN: " + user + " wurde eingeloggt");
+                session.sendMessage("LOGIN:" + user);
             }
         }
     }
@@ -277,7 +277,7 @@ public class Server {
                     String host = payload[1];
                     String port = payload[2];
                     otherUserSession.addInvitation(currentUser, host, port);
-                    session.sendMessage("INVITE_SENT:" + user + " was invited.");
+                    session.sendMessage("INVITE_SENT:" + user);
                 }
 
             }
@@ -288,7 +288,7 @@ public class Server {
     private void handleShowInvites(ChatSession session) throws IOException {
 
         if (session.getUser() == null) {
-            session.sendErrorMessage("You are not logged in.");
+            session.sendErrorMessage("Du bist nicht eingeloggt.");
         }
 
         else {
@@ -376,7 +376,7 @@ public class Server {
 
             else {
                 session.removeInvitation(user);
-                session.sendMessage("INVITE_DECLINED:Einladung wurde von User " + user + " abgelehnt.");
+                session.sendMessage("INVITE_DECLINED:" + user);
             }
         }
     }
