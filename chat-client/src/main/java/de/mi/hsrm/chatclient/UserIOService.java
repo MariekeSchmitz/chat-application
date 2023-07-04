@@ -43,14 +43,14 @@ public class UserIOService {
             }
 
             if (line.contains("image")) {
-                // src/main/resources/bildKlein.jpg
+                // image src/main/resources/bildKlein.jpg
                 String path = (line.split(" "))[1];
-                client.getChatService().sendImage(path);
+                client.getChatService().sendMessage(ChatService.IMAGE_IDENTIFIER, path);
             }
 
             // else send input as chatmessage
             if (!line.equals("!back")) {
-                client.getChatService().sendChatMessage(line);
+                client.getChatService().sendMessage(ChatService.TEXT_IDENTIFIER, line);
             }
 
             return;
