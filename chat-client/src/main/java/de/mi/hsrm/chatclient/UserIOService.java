@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
 public class UserIOService {
 
     private Client client;
@@ -12,8 +11,7 @@ public class UserIOService {
     public UserIOService(Client client) {
         this.client = client;
     }
-    
-    
+
     public void startUserInput() {
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
@@ -26,7 +24,7 @@ public class UserIOService {
                     showMenu();
                 }
 
-            } while(!line.equals("quit"));
+            } while (!line.equals("quit"));
             client.stop();
 
         } catch (IOException e) {
@@ -34,7 +32,7 @@ public class UserIOService {
         }
     }
 
-    // interpret user input 
+    // interpret user input
     private void interpretUserInput(BufferedReader reader, String line) throws IOException {
 
         if (client.isChatMenuActive()) {
@@ -78,12 +76,13 @@ public class UserIOService {
                 break;
 
             case "chat":
-                // if a chat connection exists 
-                if (client.getChatService().getUdpHost()!= null && client.getChatService().getUdpPort() != 0) {
+                // if a chat connection exists
+                if (client.getChatService().getUdpHost() != null && client.getChatService().getUdpPort() != 0) {
                     client.setChatMenuActive(true);
                     showMenu();
                 } else {
-                    System.out.println("Es gibt grade keine aktive Chatverbindung. Lade jemanden ein oder bestätige eine Chat-Einladung.");
+                    System.out.println(
+                            "\nEs gibt grade keine aktive Chatverbindung. Lade jemanden ein oder bestätige eine Chat-Einladung.");
                 }
                 break;
 
@@ -127,14 +126,14 @@ public class UserIOService {
                 System.out.println("Die Eingabe scheint fehlerhaft zu sein.");
                 break;
 
-        }        
+        }
 
     }
 
     public void showMenu() {
 
         if (client.isActionMenuActive()) {
-            System.out.println("Variable aktiv");
+            // System.out.println("Variable aktiv");
             showActionMenu();
         } else if (client.isStatusMenuActive()) {
             showStatusMenu();
@@ -148,14 +147,13 @@ public class UserIOService {
 
     }
 
-
     private void showStartMenu() {
-        System.out.println("\nWillkommen in der Chat-Anwendung. Bevor du chatten kannst, musst du dich einloggen oder dich registrieren. Gib dafür eins der untenstehenden Befehle ein.");
+        System.out.println(
+                "\nWillkommen in der Chat-Anwendung. Bevor du chatten kannst, musst du dich einloggen oder dich registrieren. Gib dafür eins der untenstehenden Befehle ein.");
         System.out.println("\nregister  - Registriere dich als neuer User.");
         System.out.println("login       - Wenn du dich bereits registriert hast, kannst du dich hier einloggen.");
         System.out.println("quit        - Beenden");
     }
-
 
     private void showMainMenu() {
         System.out.println("\nDu bist im Hauptmenü. Was möchstest du tun?");
@@ -165,15 +163,14 @@ public class UserIOService {
         System.out.println("quit        - Beenden");
     }
 
-
     private void showStatusMenu() {
         System.out.println("\nDu bist im Statusmenü. Welchen Status möchtest du gerne abfragen?");
-        System.out.println("\ninvitations   - Hier kannst du alle Einladungen einsehen, die du von Usern erhalten hast.");
+        System.out
+                .println("\ninvitations   - Hier kannst du alle Einladungen einsehen, die du von Usern erhalten hast.");
         System.out.println("users           - Hier kannst du User sehen, die grade auch eingeloggt sind.");
         System.out.println("back            - Zurück zum Hauptmenü");
         System.out.println("quit            - Beenden");
     }
-
 
     private void showActionMenu() {
         System.out.println("\nDu bist im Aktionsmenü. Was möchtest du tun?");
@@ -185,15 +182,10 @@ public class UserIOService {
         System.out.println("quit   - Beenden");
     }
 
-
     private void chatUsage() {
         System.out.println("\n Du bist jetzt im Chat-Bereich.");
         System.out.println("\n!back       - Zurück zum Hauptmenü. Du bleibt mit dem Chat im Hintergrund verbunden.");
         System.out.println("!disconnect - Zurück zum Hauptmenü. Die Verbindung zum Chat wird beendet.");
     }
 
-  
-
-
-    
 }

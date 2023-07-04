@@ -25,22 +25,19 @@ public class Server {
 
     private int port;
 
-
     public Server() {
         this(DEFAULT_PORT);
     }
-
 
     public Server(int port) {
         this.port = port;
         importUserdata();
     }
 
-
     public void start() {
 
         try (final ServerSocket server = new ServerSocket(port)) {
-                        
+
             while (serverRunning) {
 
                 // listen to and accept incoming requests for connection
@@ -52,20 +49,18 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-            
-    }
 
+    }
 
     public void stop() {
         serverRunning = false;
         exportUserdata();
     }
 
-
     private void handleIncomingRequests(Socket socket) {
 
         try (final BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
+                final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
             // create session per incoming request (user)
             ChatSession chatsession = new ChatSession(socket, reader, writer);
@@ -77,26 +72,24 @@ public class Server {
                 line = reader.readLine();
                 interpret(chatsession, line);
             } while (!line.equals("END_SESSION"));
-            
 
             // When session is ended remove user from activeUser map
             String user = chatsession.getUser();
             if (user != null) {
                 activeUsers.remove(user);
             }
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     private void interpret(ChatSession session, String line) throws IOException {
 
         String[] requestElements = line.split(":");
         String command = requestElements[0];
 
-        String [] data = null; 
+        String[] data = null;
 
         if (requestElements.length >= 2) {
             data = requestElements[1].split(" ");
@@ -143,9 +136,7 @@ public class Server {
 
     }
 
-
     private void handleRegistration(ChatSession session, String[] data) throws IOException {
-
 
         if (data == null) {
             session.sendErrorMessage("Es wurden keine Nutzerdaten angegeben");
@@ -173,15 +164,12 @@ public class Server {
 
     }
 
-
     private void handleLogin(ChatSession session, String[] data) throws IOException {
-
-        
 
         if (session.getUser() != null) {
             session.sendErrorMessage("Schon eingeloggt.");
         }
-        
+
         else if (data == null) {
             session.sendErrorMessage("Keine Nutzerdaten angegeben.");
         }
@@ -215,9 +203,8 @@ public class Server {
         }
     }
 
-
     private void handleLogout(ChatSession session) throws IOException {
-        
+
         String user = session.getUser();
 
         if (user == null) {
@@ -231,7 +218,6 @@ public class Server {
 
     }
 
-
     private void handleShowUsers(ChatSession session) throws IOException {
 
         if (session.getUser() == null) {
@@ -243,7 +229,6 @@ public class Server {
             session.sendMessage("REQUEST_ACTIVES:" + users);
         }
     }
-
 
     private void handleInvite(ChatSession session, String[] payload) throws IOException {
 
@@ -275,8 +260,8 @@ public class Server {
 
             else if (!registeredUsers.containsKey(user)) {
                 session.sendErrorMessage("User " + user + " existiert nicht.");
-            } 
-            
+            }
+
             else if (!activeUsers.containsKey(user)) {
                 session.sendErrorMessage("User " + user + " ist nicht verfügbar.");
             }
@@ -300,9 +285,8 @@ public class Server {
 
     }
 
-
     private void handleShowInvites(ChatSession session) throws IOException {
-        
+
         if (session.getUser() == null) {
             session.sendErrorMessage("You are not logged in.");
         }
@@ -312,7 +296,6 @@ public class Server {
             session.sendMessage("SHOW_INVITES:" + invites);
         }
     }
-
 
     private void handleAcceptInvite(ChatSession session, String[] payload) throws IOException {
 
@@ -334,13 +317,10 @@ public class Server {
             session.sendErrorMessage("Du kannst nur einen User einladen.");
         }
 
-
-
         else {
 
             String user = payload[0];
-       
-            
+
             if (!session.getInvitations().containsKey(user)) {
                 session.sendErrorMessage("User " + user + " hat dich nicht eingeladen.");
             }
@@ -389,19 +369,17 @@ public class Server {
         else {
 
             String user = payload[0];
-       
-            
+
             if (!session.getInvitations().containsKey(user)) {
                 session.sendErrorMessage("User " + user + " hat dich nicht eingeladen.");
-            } 
-            
+            }
+
             else {
                 session.removeInvitation(user);
                 session.sendMessage("INVITE_DECLINED:Einladung wurde von User " + user + " abgelehnt.");
             }
         }
     }
-
 
     private void importUserdata() {
 
@@ -420,24 +398,22 @@ public class Server {
         }
     }
 
-
     private void exportUserdata() {
-        
+
         final File file = new File(USERDATA_FILE);
         ensureFileExists(file);
 
         try (final BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (String user: registeredUsers.keySet()) {
+            for (String user : registeredUsers.keySet()) {
                 String pass = registeredUsers.get(user);
                 writer.write(user + ";" + pass);
                 writer.newLine();
-            } 
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-
 
     private void ensureFileExists(final File file) {
         try {
@@ -447,4 +423,3 @@ public class Server {
         }
     }
 }
-

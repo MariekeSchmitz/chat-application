@@ -3,7 +3,7 @@ package de.mi.hsrm.chatclient.ServerService;
 import de.mi.hsrm.chatclient.Client;
 
 public class ServerResponseService {
-    
+
     private Client client;
 
     public ServerResponseService(Client client) {
@@ -11,16 +11,16 @@ public class ServerResponseService {
     }
 
     public void handleTCPResponse(String response) {
-        
+
         String[] responseElements = response.split(":");
         String command = responseElements[0];
 
         String payload = "";
         if (responseElements.length >= 2) {
             payload = responseElements[1];
-        } 
+        }
 
-        switch(command.toUpperCase()) {
+        switch (command.toUpperCase()) {
 
             case "REGISTER":
                 System.out.println("\nRegistrierung erfolgreich. Du kannst dich jetzt einloggen.");
@@ -34,7 +34,7 @@ public class ServerResponseService {
             case "REQUEST_ACTIVES":
                 System.out.println("\nAktuell sind diese User aktiv:");
 
-                for (String username: payload.split(";")) {
+                for (String username : payload.split(";")) {
                     System.out.println("- " + username);
                 }
 
@@ -43,12 +43,12 @@ public class ServerResponseService {
             case "SHOW_INVITES":
                 System.out.println("\nDu wurdest von diesen Usern eingeladen:");
 
-                 for (String username: payload.split(";")) {
+                for (String username : payload.split(";")) {
                     System.out.println("- " + username);
                 }
 
                 break;
-            
+
             case "ERROR":
                 System.out.println(payload.toUpperCase());
                 break;
@@ -59,7 +59,7 @@ public class ServerResponseService {
                 break;
 
             case "INVITE_ACCEPT":
-                System.out.println("Invitation wurde angenommen");
+                System.out.println("Einladung wurde angenommen");
                 String[] data = payload.split(";");
                 String host = data[0];
                 int port = Integer.valueOf(data[1]);
@@ -70,7 +70,7 @@ public class ServerResponseService {
                 client.getChatService().setUdpHost(host);
                 client.getChatService().setUdpPort(port);
                 client.getChatService().getReadyForChat();
-           
+
             case "INVITE_DECLINED":
                 System.out.println(payload);
                 break;
@@ -80,7 +80,6 @@ public class ServerResponseService {
                 break;
 
         }
-
 
     }
 
