@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Server {
 
     public static final int DEFAULT_PORT = 12345;
-    public static final String USERDATA_FILE = "chat-server/src/main/resources/registeredUsers.txt";
+    public static final String USERDATA_FILE = "src/main/resources/registeredUsers.txt";
 
     private Map<String, ChatSession> activeUsers = new ConcurrentHashMap<>();
     private Map<String, String> registeredUsers = new ConcurrentHashMap<>();
