@@ -45,12 +45,12 @@ public class UserIOService {
             if (line.contains("image")) {
                 // image src/main/resources/bildKlein.jpg
                 String path = (line.split(" "))[1];
-                client.getChatService().sendMessage(ChatService.IMAGE_IDENTIFIER, path);
+                client.getChatService().prepareSendMessageAndTimer(ChatService.IMAGE_IDENTIFIER, path);
             }
 
             // else send input as chatmessage
             if (!line.equals("!back")) {
-                client.getChatService().sendMessage(ChatService.TEXT_IDENTIFIER, line);
+                client.getChatService().prepareSendMessageAndTimer(ChatService.TEXT_IDENTIFIER, line);
             }
 
             return;
